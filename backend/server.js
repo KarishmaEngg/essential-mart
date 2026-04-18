@@ -106,7 +106,10 @@ const slugify = (text) => {
 // ==========================================
 // 4. API ENDPOINTS
 // ==========================================
-
+// Add this before app.listen()
+app.get('/', (req, res) => {
+    res.send('Essential Mart Backend is Running! Access API at /api/products');
+});
 // Health Check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'UP', database: 'Connected', timestamp: new Date() });
@@ -301,10 +304,12 @@ app.delete('/api/products/:id', async (req, res) => {
 // app.use('/uploads', express.static('uploads'));
 
 // Error handling middleware for all other cases
-app.use((err, req, res, next) => {
-    console.error('🔥 Global Error Handler:', err.stack);
-    res.status(500).send('Something broke on the server!');
-});
+// CORS setup ko aise update karo
+app.use(cors({
+    origin: 'https://essential-mart.vercel.app/', // Ya fir apne Vercel frontend ka URL yahan daalo
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 // ==========================================
 // 6. SERVER START
