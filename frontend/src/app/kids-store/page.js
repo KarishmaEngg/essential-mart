@@ -56,6 +56,7 @@ const TRENDING_CARDS = [
 
 // --- 2. MAIN CONTENT COMPONENT ---
 function KidsStoreContent() {
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const subCategory = searchParams.get("subcategory");
@@ -216,6 +217,50 @@ const handleDelete = async (productId) => {
       <main className="max-w-[1440px] mx-auto px-4 py-8">
         {(subCategory || isViewAll) ? (
           <div className="flex flex-col lg:flex-row gap-8">
+            
+            {/* Mobile Filter Button */}
+            <div className="lg:hidden mb-4">
+              <button onClick={() => setIsFilterOpen(true)} className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg font-bold text-sm">
+                <Filter size={16} /> Filters
+              </button>
+            </div>
+            
+            {/* Mobile Drawer */}
+            {/* Mobile Drawer */}
+            {isFilterOpen && (
+              <div className="fixed inset-0 z-[150] bg-white p-6 overflow-y-auto">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="font-black text-lg">Filters</h2>
+                  <X onClick={() => setIsFilterOpen(false)} size={24} />
+                </div>
+            
+                {/* YAHAN WAHI FILTER CONTENT PASTE KARO JO SIDEBAR MEIN HAI */}
+                <div className="space-y-8">
+                  {/* Category List */}
+                  <div className="space-y-4">
+                    <span className="text-[11px] font-black tracking-widest uppercase text-cyan-600">Browse Category</span>
+                    <div className="space-y-3">
+                      {FILTER_DATA.categories.map(c => (
+                        <label key={c.slug} className="flex items-center gap-3">
+                          <input 
+                            type="checkbox" 
+                            checked={selectedCategories.includes(c.slug)}
+                            onChange={() => handleCatToggle(c.slug)}
+                            className="w-4 h-4 accent-cyan-500" 
+                          />
+                          <span className="text-sm text-gray-700">{c.name}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Price Range wahi rahega */}
+                  {/* ... price range ka code ... */}
+                </div>
+            
+                <button onClick={() => setIsFilterOpen(false)} className="w-full bg-black text-white py-3 rounded-xl mt-6">Show Results</button>
+              </div>
+            )}
             <aside className="hidden lg:block w-[300px] shrink-0 pr-6 border-r border-gray-100">
               <div className="sticky top-28 space-y-8">
                 <div className="flex justify-between items-center pb-4 border-b">
