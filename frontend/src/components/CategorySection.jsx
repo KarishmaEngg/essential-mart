@@ -97,7 +97,7 @@ export default function CategorySection() {
     {others.map((cat, i) => (
       <Link
         key={i}
-        href={`/category/${cat.name.toLowerCase()}`}
+        href={`/${cat.name.toLowerCase()}-store`}
         className="h-full w-full"
       >
         <CategoryCard cat={cat} />

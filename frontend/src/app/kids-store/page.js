@@ -87,7 +87,7 @@ function KidsStoreContent() {
       try {
         setLoading(true);
         // "ALL" click hone par view=all set hoga, tab hum sirf category=kids bhejenge
-        let url = `http://localhost:5000/api/products?category=kids`;
+        let url = `https://essential-mart.onrender.com/api/products?category=kids`;
         if (subCategory) {
           url += `&sub_category=${subCategory}`;
           setSelectedCategories([subCategory]);
@@ -145,7 +145,7 @@ function KidsStoreContent() {
   // --- 5. HANDLERS (Isi section mein ye add karein) ---
 const handleDelete = async (productId) => {
     try {
-        await fetch(`http://localhost:5000/api/products/${productId}`, {
+        await fetch(`https://essential-mart.onrender.com/api/products/${productId}`, {
             method: 'DELETE',
         });
         // UI ko update karne ke liye state se wo product remove kar dein
@@ -186,19 +186,32 @@ const handleDelete = async (productId) => {
     <div className="bg-white min-h-screen font-sans bg-center">
       {/* --- STICKY NAVIGATION --- */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b">
-        <div className="max-w-[1440px] mx-auto px-4 flex  justify-center items-center gap-6 py-4 overflow-x-auto scrollbar-hide">
-          <div onClick={handleAllClick} className="cursor-pointer min-w-[60px] flex flex-col items-center group">
-            <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all shadow-sm ${isViewAll ? 'bg-black text-white border-black' : 'border-black group-hover:bg-black group-hover:text-white'}`}>ALL</div>
-            <span className="text-[10px] mt-1 font-bold tracking-tighter">EXPLORE</span>
-          </div>
-          {CATEGORIES.map(cat => (
-            <div key={cat.slug} onClick={() => router.push(`/kids-store?subcategory=${cat.slug}`)} className="cursor-pointer min-w-[70px] flex flex-col items-center group">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl border-2 transition-all duration-300 ${subCategory === cat.slug ? 'border-cyan-500 bg-cyan-50 scale-110 shadow-md' : 'border-transparent bg-gray-50 hover:bg-gray-100'}`}>{cat.icon}</div>
-              <span className={`text-[9px] mt-1 font-bold uppercase tracking-tighter transition-colors ${subCategory === cat.slug ? 'text-cyan-600' : 'text-gray-400'}`}>{cat.name}</span>
-            </div>
-          ))}
+  {/* Flex-nowrap ensure karta hai ki items ek hi line mein rahein aur scroll ho sakein */}
+  <div className="flex flex-nowrap items-center gap-4 py-3 px-2 overflow-x-auto scrollbar-hide">
+    
+    <div onClick={handleAllClick} className="cursor-pointer flex-shrink-0 flex flex-col items-center group">
+      <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all ${isViewAll ? 'bg-black text-white border-black' : 'border-black hover:bg-black hover:text-white'}`}>
+        ALL
+      </div>
+      <span className="text-[10px] mt-1 font-bold tracking-tighter text-center">EXPLORE</span>
+    </div>
+
+    {CATEGORIES.map(cat => (
+      <div 
+        key={cat.slug} 
+        onClick={() => router.push(`/women-store?subcategory=${cat.slug}`)} 
+        className="cursor-pointer flex-shrink-0 flex flex-col items-center group"
+      >
+        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl border-2 transition-all ${subCategory === cat.slug ? 'border-cyan-500 bg-cyan-50 scale-105' : 'border-transparent bg-gray-100 hover:bg-gray-200'}`}>
+          {cat.icon}
         </div>
-      </nav>
+        <span className={`text-[9px] mt-1 font-bold uppercase tracking-tighter truncate w-16 text-center ${subCategory === cat.slug ? 'text-cyan-600' : 'text-gray-500'}`}>
+          {cat.name}
+        </span>
+      </div>
+    ))}
+  </div>
+</nav>
 
       <main className="max-w-[1440px] mx-auto px-4 py-8">
         {(subCategory || isViewAll) ? (
