@@ -106,7 +106,7 @@ function WomenStoreContent() {
       try {
         setLoading(true);
         // "ALL" click hone par view=all set hoga, tab hum sirf category=women bhejenge
-        let url = `https://essential-mart.onrender.com/api/products?category=women`;
+        let url = `http://localhost:5000/api/products?category=women`;
         if (subCategory) {
           url += `&sub_category=${subCategory}`;
           setSelectedCategories([subCategory]);
@@ -363,7 +363,7 @@ function WomenStoreContent() {
         ) : (
            // HOME PAGE VIEW (Full Screen Banner + Sections)
           <div className="w-full">
-            <section className=" h-200px w-full ">
+             <section className="relative w-full h-[300px] md:h-[500px] overflow-hidden">
               {CAROUSEL_IMAGES.map((img, idx) => (
                 <div key={idx} className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentSlide ? "opacity-100" : "opacity-0"}`}>
                   <img src={img} className="w-full h-full object-cover" alt="Banner" />
@@ -376,7 +376,7 @@ function WomenStoreContent() {
               </div>
             </section>
 
-            <div className=" bg-white mt-110">
+          <div className="bg-white py-10 px-4 md:px-8">
               <div className="max-w-[1440px] mx-auto">
                 <WomenItem />
               </div>

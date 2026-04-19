@@ -159,10 +159,11 @@ app.get('/api/products', async (req, res) => {
         
         console.log(`🔍 Found ${formatted.length} products for query:`, req.query);
         res.json(formatted);
-    } catch (err) {
-        console.error("❌ GET /api/products Error:", err.message);
-        res.status(500).json({ error: "Failed to fetch products" });
-    }
+    } // server.js mein isse update karein
+catch (err) {
+    console.error("❌ GET /api/products Error:", err); // 'err.message' ki jagah sirf 'err' likhein
+    res.status(500).json({ error: err.message, stack: err.stack });
+}
 });
 
 /**

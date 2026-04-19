@@ -80,45 +80,43 @@ function MenStoreContent() {
   const [sortBy, setSortBy] = useState("popularity");
 
   // --- FETCH DATA LOGIC ---
-  useEffect(() => {
+ // 1. Fetch logic ko update karein
+useEffect(() => {
     async function fetchProducts() {
-      if (!subCategory && !isViewAll) {
-        setRawProducts([]);
-        setSelectedCategories([]);
-        return;
-      }
-
-      try {
         setLoading(true);
-        let url = `https://essential-mart.onrender.com/api/products?category=men`;
-        
-        if (subCategory) {
-          url += `&sub_category=${subCategory}`;
-          setSelectedCategories([subCategory]);
-        } else {
-          setSelectedCategories([]);
-        }
+        try {
+            // URL verify karein - category 'men' ya 'kids' jo bhi sahi ho
+            let url = `http://localhost:5000/api/products?category=men`;
+            
+            if (subCategory) {
+                url += `&sub_category=${subCategory}`;
+            }
 
-        const res = await fetch(url);
-        const data = await res.json();
-        
-        const formattedData = data.map(item => ({
-          ...item,
-          images: Array.isArray(item.images) ? item.images : JSON.parse(item.images || "[]"),
-          color: item.color || "Black", 
-          gender: item.gender || "men",
-          price: parseFloat(item.discounted_price || item.price || 0)
-        }));
-        
-        setRawProducts(formattedData);
-      } catch (e) { 
-        console.error("Fetch Error:", e); 
-      } finally { 
-        setLoading(false); 
-      }
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            // ✅ FIX: Check if data is array before mapping
+            if (Array.isArray(data)) {
+                const formattedData = data.map(item => ({
+                    ...item,
+                    // images ko handle karna zaruri hai
+                    images: Array.isArray(item.images) ? item.images : (JSON.parse(item.images || "[]")),
+                    price: parseFloat(item.discounted_price || item.price || 0)
+                }));
+                setRawProducts(formattedData);
+            } else {
+                console.error("Data is not an array:", data);
+                setRawProducts([]);
+            }
+        } catch (e) { 
+            console.error("Fetch Error:", e);
+            setRawProducts([]);
+        } finally { 
+            setLoading(false); 
+        }
     }
     fetchProducts();
-  }, [subCategory, isViewAll]);
+}, [subCategory, isViewAll]);
 
   // --- FILTERING LOGIC ---
   const filteredProducts = useMemo(() => {
@@ -189,7 +187,7 @@ function MenStoreContent() {
     {CATEGORIES.map(cat => (
       <div 
         key={cat.slug} 
-        onClick={() => router.push(`/women-store?subcategory=${cat.slug}`)} 
+        onClick={() => router.push(`/men-store?subcategory=${cat.slug}`)} 
         className="cursor-pointer flex-shrink-0 flex flex-col items-center group"
       >
         <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl border-2 transition-all ${subCategory === cat.slug ? 'border-cyan-500 bg-cyan-50 scale-105' : 'border-transparent bg-gray-100 hover:bg-gray-200'}`}>
@@ -337,23 +335,22 @@ function MenStoreContent() {
             </section>
           </div>
         ) : (
-          // HOME PAGE VIEW (Full Screen Banner + Sections)
           <div className="w-full">
-            <section className=" h-200px w-full ">
+            <section className="relative w-full h-[300px] md:h-[500px] overflow-hidden">
               {CAROUSEL_IMAGES.map((img, idx) => (
                 <div key={idx} className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentSlide ? "opacity-100" : "opacity-0"}`}>
                   <img src={img} className="w-full h-full object-cover" alt="Banner" />
                 </div>
               ))}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <button onClick={handleAllClick} className="bg-white text-black px-12 py-5 mt-110 rounded-full font-black text-xs uppercase flex items-center gap-2 hover:bg-cyan-500 hover:text-white transition-all shadow-xl">
-                  Shop All Kids <ChevronRight size={16} />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                <button onClick={() => router.push("/men-store?view=all")} className="bg-white text-black px-8 py-3 rounded-full font-black text-xs uppercase hover:bg-cyan-500 hover:text-white transition-all shadow-xl">
+                  Shop All Men <ChevronRight size={16} />
                 </button>
               </div>
             </section>
 
-            <div className=" bg-white mt-110">
-              <div className="max-w-[1440px] mx-auto">
+            <div className="bg-white py-10 px-4 md:px-8">
+              <div className="max-w-[1440px] mx-auto w-full">
                 <MenItem />
               </div>
             </div>           
@@ -366,7 +363,7 @@ function MenStoreContent() {
 
 export default function KidsStore() {
   return (
-    <Suspense fallback={<div className="h-screen flex items-center justify-center font-black">LOADING...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <MenStoreContent />
     </Suspense>
   );

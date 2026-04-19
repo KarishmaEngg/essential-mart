@@ -85,7 +85,7 @@ export default function CategorySection() {
       </div>
 
      {/* MAIN GRID */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-[300px] mb-150">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-[300px] mb-250">
   
   {/* LEFT BIG (1 Image) */}
   <Link href="/women-store" className="w-full h-full">
