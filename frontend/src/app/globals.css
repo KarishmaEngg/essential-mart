@@ -29,3 +29,8 @@ body {
 h1, h2, .font-serif {
   font-family: var(--font-serif);
 }
+
+/* globals.css */
+.scroll-mt-nav {
+  scroll-margin-top: 120px; /* Aapke navbar ki height ke hisaab se adjust karein */
+}

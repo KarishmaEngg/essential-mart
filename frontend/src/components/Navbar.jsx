@@ -21,7 +21,7 @@ const CATEGORY_DATA = {
   ],
   KIDS: [
     { title: "BOYS", links: ["T-Shirts", "Shirts", "Jeans", "Shorts"] },
-    { title: "GIRLS", links: ["Dresses", "Tops", "Leggings", "Skirts"] },
+    { title: "GIRLS", links: ["Dresses", "Tops",  "Skirts"] },
     { title: "FOOTWEAR", links: ["School Shoes", "Sneakers", "Sandals"] }
   ]
 };

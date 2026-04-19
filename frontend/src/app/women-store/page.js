@@ -191,9 +191,12 @@ function WomenStoreContent() {
   return (
     <div className="bg-white min-h-screen font-sans">
       {/* --- STICKY NAVIGATION --- */}
-    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b">
-  {/* Flex-nowrap ensure karta hai ki items ek hi line mein rahein aur scroll ho sakein */}
-  <div className="flex flex-nowrap items-center gap-4 py-3 px-2 overflow-x-auto scrollbar-hide">
+   <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b">
+  {/* 1. justify-start: Mobile par start se dikhayega (scrollable)
+    2. md:justify-center: Laptop/Desktop par center mein kar dega
+    3. w-full: Container ko full width dega 
+  */}
+  <div className="flex flex-nowrap items-center justify-start md:justify-center gap-4 py-3 px-2 overflow-x-auto scrollbar-hide w-full">
     
     <div onClick={handleAllClick} className="cursor-pointer flex-shrink-0 flex flex-col items-center group">
       <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all ${isViewAll ? 'bg-black text-white border-black' : 'border-black hover:bg-black hover:text-white'}`}>
@@ -219,7 +222,7 @@ function WomenStoreContent() {
   </div>
 </nav>
 
-      <main className="max-w-[1440px] mx-auto px-4 py-8">
+      <main className="max-w-[1440px] mx-auto px-4 py-8 scroll-mt-nav">
         {(subCategory || isViewAll) ? (
           <div className="flex flex-col lg:flex-row gap-8">
             {/* MOBILE FILTER BUTTON */}
@@ -369,11 +372,14 @@ function WomenStoreContent() {
                   <img src={img} className="w-full h-full object-cover" alt="Banner" />
                 </div>
               ))}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <button onClick={handleAllClick} className="bg-white text-black px-12 py-5 mt-110 rounded-full font-black text-xs uppercase flex items-center gap-2 hover:bg-cyan-500 hover:text-white transition-all shadow-xl">
-                  Shop All Kids <ChevronRight size={16} />
-                </button>
-              </div>
+             <div className="absolute inset-0 flex items-center justify-center">
+  <button 
+    onClick={handleAllClick} 
+    className="bg-white text-black px-8 py-3 md:px-12 md:py-5 rounded-full font-black text-[10px] md:text-xs uppercase flex items-center gap-2 hover:bg-cyan-500 hover:text-white transition-all shadow-xl"
+  >
+    Shop All Women <ChevronRight size={16} />
+  </button>
+</div>
             </section>
 
           <div className="bg-white py-10 px-4 md:px-8">
