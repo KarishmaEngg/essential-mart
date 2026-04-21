@@ -5,24 +5,23 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, Search, User, LogOut, ChevronDown, Menu, X } from 'lucide-react';
-
-const CATEGORY_DATA = {
+ const CATEGORY_DATA = {
   MEN: [
-    { title: "WESTERN WEAR", links: ["Jeans", "Shirts", "Shorts", "Track Pants", "Tshirts"] },
-    { title: "FOOTWEAR", links: ["Boots", "Casual Shoes", "Sneakers", "Sports Shoes"] },
-    { title: "ETHNIC WEAR", links: ["Kurtas", "Sherwani Sets", "Stoles"] },
-    { title: "ACCESSORIES", links: ["Belts", "Watches", "Sunglasses", "Wallets"] },
+    { title: "WESTERN WEAR", links: [{name: "Jeans", slug: "jeans"}, {name: "Shirts", slug: "shirts"}, {name: "Shorts", slug: "shorts"}, {name: "Track Pants", slug: "track-pants"}, {name: "Tshirts", slug: "t-shirts"}] },
+    { title: "FOOTWEAR", links: [{name: "Boots", slug: "boots"}, {name: "Casual Shoes", slug: "casual-shoes"}, {name: "Sneakers", slug: "sneakers"}, {name: "Sports Shoes", slug: "sports-shoes"}] },
+    { title: "ETHNIC WEAR", links: [{name: "Kurtas", slug: "ethnic"}, {name: "Sherwani Sets", slug: "ethnic"}, {name: "Stoles", slug: "ethnic"}] },
+    
   ],
   WOMEN: [
-    { title: "ETHNIC WEAR", links: ["Kurtis", "Sarees", "Lehengas", "Suit Sets"] },
-    { title: "WESTERN WEAR", links: ["Tops", "Dresses", "Jeans", "Skirts", "Tshirts"] },
-    { title: "FOOTWEAR", links: ["Heels", "Flats", "Sneakers", "Sandals"] },
-    { title: "JEWELLERY", links: ["Earrings", "Necklaces", "Rings", "Bracelets"] },
+    { title: "ETHNIC WEAR", links: [{name: "Kurtis", slug: "kurtis"}, {name: "Sarees", slug: "sarees"}, {name: "Lehengas", slug: "lehengas"}, {name: "Suit Sets", slug: "suit-sets"}] },
+    { title: "WESTERN WEAR", links: [{name: "Tops", slug: "tops"}, {name: "Dresses", slug: "dresses"}, {name: "Jeans", slug: "jeans"}, {name: "Skirts", slug: "skirts"}, {name: "Tshirts", slug: "tshirts"}] },
+    { title: "FOOTWEAR", links: [{name: "Heels", slug: "heels"}, {name: "Flats", slug: "flats"}, {name: "Sneakers", slug: "sneakers"}, {name: "Sandals", slug: "sandals"}] },
+    { title: "JEWELLERY", links: [{name: "Earrings", slug: "earrings"}, {name: "Necklaces", slug: "necklaces"}, {name: "Rings", slug: "rings"}, {name: "Bracelets", slug: "bracelets"}] },
   ],
   KIDS: [
-    { title: "BOYS", links: ["T-Shirts", "Shirts", "Jeans", "Shorts"] },
-    { title: "GIRLS", links: ["Dresses", "Tops",  "Skirts"] },
-    { title: "FOOTWEAR", links: ["School Shoes", "Sneakers", "Sandals"] }
+    { title: "BOYS", links: [{name: "T-Shirts", slug: "tshirts"}, {name: "Shirts", slug: "shirts"}, {name: "Jeans", slug: "jeans"}, {name: "Shorts", slug: "shorts"}] },
+    { title: "GIRLS", links: [{name: "Dresses", slug: "dresses"}, {name: "Tops", slug: "tops"}, {name: "Skirts", slug: "skirts"}] },
+    { title: "FOOTWEAR", links: [{name: "School Shoes", slug: "school-shoes"}, {name: "Sneakers", slug: "sneakers"}, {name: "Sandals", slug: "sandals"}] }
   ]
 };
 
@@ -83,7 +82,7 @@ export default function Navbar() {
               onMouseLeave={() => setActiveTab(null)}
             >
               <Link 
-                href={`/${tab.toLowerCase()}`}
+                href={`/${tab.toLowerCase()}-store`}
                 className={`text-[12px] font-black tracking-widest transition-all uppercase h-full flex items-center gap-1 ${activeTab === tab ? 'text-[#a68b6d]' : 'text-gray-800'}`}
               >
                 {tab}
@@ -192,37 +191,58 @@ export default function Navbar() {
           >
             <div className="max-w-7xl mx-auto px-10 py-12">
               <div className="grid grid-cols-5 gap-10">
-                <div className="col-span-1 bg-[#f7f7f7] rounded-3xl p-6 flex flex-col justify-end h-[250px] relative overflow-hidden group">
-                   <div className="relative z-10">
-                      <h4 className="text-2xl font-black italic uppercase tracking-tighter leading-none">New<br/>Arrivals</h4>
-                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] mt-2 text-[#a68b6d]">Shop {activeTab}</p>
-                   </div>
-                   <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-white/80 to-transparent" />
-                </div>
+               {/* --- MEGA MENU (DESKTOP) --- */}
+{/* ... upar ka code ... */}
 
-                {CATEGORY_DATA[activeTab].map((section, idx) => (
-                  <div key={idx} className="flex flex-col">
-                    <h4 className="text-[12px] font-black mb-6 text-black uppercase tracking-widest border-l-2 border-[#a68b6d] pl-3">
-                      {section.title}
-                    </h4>
-                    <ul className="space-y-3">
-                      {section.links.map((link) => {
-                        const base = activeTab.toLowerCase();
-                        const slug = link.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
-                        return (
-                          <li key={link}>
-                            <Link 
-                              href={`/${base}-store`}
-                              className="text-[11px] font-bold text-gray-500 hover:text-black hover:translate-x-1 transition-all block uppercase"
-                            >
-                              {link}
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
+{/* --- MEGA MENU IMAGE SECTION --- */}
+<div className="col-span-1 rounded-3xl h-[250px] relative overflow-hidden group">
+  
+  {/* Dynamic Image Selection based on activeTab */}
+  <img 
+    src={
+      activeTab === 'MEN' ? 'https://i.pinimg.com/736x/43/90/ff/4390ffa4d38e7939b0b08caabb5d25fd.jpg' :
+      activeTab === 'WOMEN' ? 'https://i.pinimg.com/1200x/8b/6f/d3/8b6fd3f127d05ffe961fcbb0f56faccf.jpg' :
+      'https://i.pinimg.com/736x/4f/45/95/4f45959163bfe0b52a344043c3190c13.jpg'
+    }
+    alt="New Arrivals"
+    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+  />
+  
+  {/* Gradient Overlay */}
+  <div className="absolute inset-0 bg-black/40" />
+  
+  <div className="relative z-10 p-6 flex flex-col justify-end h-full">
+    <h4 className="text-2xl font-black italic uppercase tracking-tighter leading-none text-white">
+      New<br/>Arrivals
+    </h4>
+    <p className="text-[10px] font-bold uppercase tracking-[0.2em] mt-2 text-white/80">
+      Shop {activeTab}
+    </p>
+  </div>
+</div>
+
+{/* ... baki ka code ... */}
+
+               {CATEGORY_DATA[activeTab].map((section, idx) => (
+  <div key={idx} className="flex flex-col">
+    <h4 className="text-[12px] font-black mb-6 text-black uppercase tracking-widest border-l-2 border-[#a68b6d] pl-3">
+      {section.title}
+    </h4>
+    <ul className="space-y-3">
+      {section.links.map((link) => (
+        <li key={link.name}>
+          <Link 
+            href={`/${activeTab.toLowerCase()}-store?subcategory=${link.slug}`} 
+            className="text-[11px] font-bold text-gray-500 hover:text-black hover:translate-x-1 transition-all block uppercase"
+          >
+            {link.name}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+))}
+                 
               </div>
             </div>
           </motion.div>
@@ -264,16 +284,16 @@ export default function Navbar() {
                     {CATEGORY_DATA[tab].map(section => (
                       <div key={section.title} className="mb-4">
                         <p className="text-[10px] font-bold text-gray-400 mb-2 uppercase">{section.title}</p>
-                        {section.links.map(link => (
-                          <Link 
-                            key={link} 
-                            href={`/${tab.toLowerCase()}-store`}
-                            onClick={() => setMobileMenu(false)}
-                            className="block text-sm font-medium text-gray-700 py-1"
-                          >
-                            {link}
-                          </Link>
-                        ))}
+                       {section.links.map((link) => (
+  <Link 
+    key={link.name} 
+    href={`/${tab.toLowerCase()}-store?subcategory=${link.slug}`} 
+    onClick={() => setMobileMenu(false)}
+    className="block text-sm font-medium text-gray-700 py-1 hover:text-[#a68b6d]"
+  >
+    {link.name}
+  </Link>
+))}
                       </div>
                     ))}
                   </div>

@@ -18,6 +18,41 @@ const KidsItem = () => {
     { id: 4, name: 'Classic Party Shoes', price: '300.00', img: 'https://i.pinimg.com/1200x/68/8b/25/688b25aded690ef13d58699f33db73d6.jpg' },
   ];
 
+    
+// ==================== ADD TO CART ====================
+const handleAddToCart = async (product) => {
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('user_id');
+
+  if (!token || !userId) {
+    alert("Please login first to add items to cart!");
+    router.push('/login');
+    return;
+  }
+
+  try {
+    const res = await fetch('http://localhost:5000/api/cart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        product_id: product.id,
+        product_name: product.name,
+        price: product.discounted_price || product.price || product.original_price,
+        user_id: parseInt(userId),
+        quantity: 1
+      })
+    });
+
+    if (res.ok) {
+      alert(`✅ ${product.name} added to cart successfully!`);
+    } else {
+      alert("Failed to add to cart");
+    }
+  } catch (err) {
+    alert("Backend server chal raha hai? (node server.js)");
+  }
+};
+
   return (
     <div className="bg-[#fff9f9] min-h-screen py-10">
       
@@ -49,7 +84,10 @@ const KidsItem = () => {
               <div className="mt-4 px-2">
                 <h3 className="text-sm font-bold text-gray-800">{product.name}</h3>
                 <p className="text-cyan-600 font-black text-lg mt-1">₹{product.price}</p>
-                <button className="w-full mt-3 bg-gray-900 text-white py-2 rounded-xl flex items-center justify-center gap-2 text-xs font-bold hover:bg-cyan-500 transition-colors">
+                <button 
+                  onClick={() => handleAddToCart(product)}   // ← Yeh sahi hai (product use karo)
+                  className="w-full mt-3 bg-gray-900 text-white py-2 rounded-xl flex items-center justify-center gap-2 text-xs font-bold hover:bg-cyan-500 transition-colors"
+                >
                   <ShoppingBag size={14} /> Add to Cart
                 </button>
               </div>

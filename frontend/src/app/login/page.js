@@ -15,8 +15,6 @@ export default function AuthPage() {
     e.preventDefault();
     setLoading(true);
 
-    // FIX 1: URL ko '/api/login' kiya kyunki Next.js routes '/api' folder mein hote hain
-    // FIX 2: localhost:5000 hataya, ab ye direct same port (3000) par hit karega
     const endpoint = isLogin ? '/api/login' : '/api/signup';
 
     try {
@@ -29,34 +27,32 @@ export default function AuthPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // FIX 3: Role check (data.user.role) kyunki route.js mein object structure alag hai
-        const userRole = data.user?.role || 'user';
-        
+        // ==================== FIXED STORAGE ====================
         localStorage.setItem('token', data.token);
-        localStorage.setItem('role', userRole);
+        localStorage.setItem('user_id', data.user.id);     // ← Yeh line add ki
+        localStorage.setItem('role', data.user.role || 'user');
+        localStorage.setItem('email', data.user.email);
 
         if (isLogin) {
-        if (email === 'admin@essential.com' || userRole === 'admin') {
-            alert("Access Granted: Welcome Boss!");
-            // setTimeout use karein taaki storage set ho jaye
+          if (email === 'admin@essential.com' || data.user.role === 'admin') {
+            alert("Welcome Admin! 🎉");
             setTimeout(() => {
-                window.location.href = '/admin/add-product';
-            }, 100);
+              window.location.href = '/admin/add-product';
+            }, 300);
+          } else {
+            alert("Login Successful! Welcome back ❤️");
+            window.location.href = '/women-store';   // Ya jahan aap chahein
+          }
         } else {
-            alert("Login successful!");
-            window.location.href = '/'; 
-        }
-        } else {
-          alert("Account created successfully! Please login.");
+          alert("Account created! Now please login.");
           setIsLogin(true);
         }
       } else {
-        // Server se aane wala error message dikhayega
-        alert("Error: " + (data.error || "Something went wrong"));
+        alert("Error: " + (data.error || "Invalid credentials"));
       }
     } catch (err) {
-      console.error("Connection failed:", err);
-      alert("Server se connection nahi ho pa raha. Check karein ki Terminal mein Next.js chal raha hai.");
+      console.error(err);
+      alert("Server connection failed. Backend chal raha hai?");
     } finally {
       setLoading(false);
     }
@@ -65,14 +61,10 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-        
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">
             {isLogin ? 'Essential Mart Login' : 'Create an account'}
           </h1>
-          <p className="text-gray-500 mt-2 text-sm">
-            {isLogin ? 'Admin panel ya account access karne ke liye details bharein' : 'Join Essential Mart today'}
-          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -87,7 +79,7 @@ export default function AuthPage() {
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 required 
-                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm text-black"
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-black"
                 placeholder="admin@essential.com"
               />
             </div>
@@ -104,7 +96,7 @@ export default function AuthPage() {
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
                 required 
-                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm text-black"
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-black"
                 placeholder="••••••••"
               />
             </div>
@@ -113,21 +105,13 @@ export default function AuthPage() {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full flex justify-center items-center gap-2 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-all active:scale-[0.98] disabled:opacity-70"
+            className="w-full flex justify-center items-center gap-2 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-all disabled:opacity-70"
           >
-            {loading ? (
-              <Loader2 className="animate-spin" size={20} />
-            ) : (
-              isLogin ? <><LogIn size={18} /> Sign In</> : <><UserPlus size={18} /> Register</>
-            )}
+            {loading ? <Loader2 className="animate-spin" size={20} /> : isLogin ? <><LogIn size={18} /> Sign In</> : <><UserPlus size={18} /> Register</>}
           </button>
 
           <div className="text-center pt-2">
-            <button 
-              type="button"
-              onClick={() => setIsLogin(!isLogin)} 
-              className="text-sm text-blue-600 hover:underline font-medium"
-            >
+            <button type="button" onClick={() => setIsLogin(!isLogin)} className="text-sm text-blue-600 hover:underline">
               {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Log In"}
             </button>
           </div>

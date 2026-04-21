@@ -17,9 +17,7 @@ const FILTER_DATA = {
     { name: "Co-ord Sets", count: 600, slug: "co-ord-sets" },
     { name: "Bottoms", count: 800, slug: "bottoms" },
     { name: "Suits", count: 450, slug: "suits" },
-    { name: "Footwear", count: 300, slug: "footwear" },
     { name: "Accessories", count: 200, slug: "accessories" },
-    { name: "Bags", count: 150, slug: "bags" },
     { name: "Beauty", count: 500, slug: "beauty" }
   ],
   brands: ["Aurelia", "W", "Biba", "Libas", "Pantaloons", "FabIndia"],
@@ -50,9 +48,7 @@ const CATEGORIES = [
   { name: "CO-ORD SETS", icon: "👕", slug: "co-ord-sets" },
   { name: "BOTTOMS", icon: "👖", slug: "bottoms" },
   { name: "SUITS", icon: "🧥", slug: "suits" },
-  { name: "FOOTWEAR", icon: "👠", slug: "footwear" },
   { name: "ACCESSORIES", icon: "👜", slug: "accessories" },
-  { name: "BAGS", icon: "👜", slug: "bags" },
   { name: "BEAUTY", icon: "💄", slug: "beauty" },
 ];
 
@@ -191,7 +187,7 @@ function WomenStoreContent() {
   return (
     <div className="bg-white min-h-screen font-sans">
       {/* --- STICKY NAVIGATION --- */}
-   <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b">
+   <nav className="relative top-20 z-40 bg-white/95 backdrop-blur-md border-b">
   {/* 1. justify-start: Mobile par start se dikhayega (scrollable)
     2. md:justify-center: Laptop/Desktop par center mein kar dega
     3. w-full: Container ko full width dega 

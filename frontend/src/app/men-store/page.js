@@ -12,13 +12,9 @@ const FILTER_DATA = {
     { name: "Jeans", count: 920, slug: "jeans" },
     { name: "Trousers", count: 680, slug: "trousers" },
     { name: "Ethnic Wear", count: 950, slug: "ethnic" },
-    { name: "Suits & Blazers", count: 420, slug: "suits-blazers" },
     { name: "Jackets", count: 380, slug: "jackets" },
     { name: "Hoodies", count: 650, slug: "hoodies" },
-    { name: "Shorts", count: 540, slug: "shorts" },
-    { name: "Footwear", count: 780, slug: "footwear" },
-    { name: "Accessories", count: 310, slug: "accessories" },
-    { name: "Tracksuits", count: 290, slug: "tracksuits" },
+    {name:"Track Pants",count:999,slug:"track-pants"}
   ],
   brands: ["Roadster", "Allen Solly", "Levi's", "Peter England", "Van Heusen", "US Polo"],
   gender: [
@@ -47,7 +43,8 @@ const CATEGORIES = [
   { name: "ETHNIC", icon: "🧿", slug: "ethnic" },
   { name: "JACKETS", icon: "🧥", slug: "jackets" },
   { name: "HOODIES", icon: "👟", slug: "hoodies" },
-  { name: "SHORTS", icon: "🩳", slug: "shorts" },
+  {name: "Track Pnats",icon:"👖",slug:"track-pants"}
+
   
  
 ];
@@ -173,7 +170,7 @@ useEffect(() => {
   return (
     <div className="bg-white min-h-screen font-sans">
       {/* --- STICKY NAVIGATION --- */}
-      <nav className=" sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b">
+      <nav className=" sticky top-20 z-40 bg-white/95 backdrop-blur-md border-b">
   {/* 1. justify-start: Mobile par start se dikhayega (scrollable)
     2. md:justify-center: Laptop/Desktop par center mein kar dega
     3. w-full: Container ko full width dega 

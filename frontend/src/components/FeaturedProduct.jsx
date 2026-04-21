@@ -1,4 +1,6 @@
+"use client";
 import { products } from "@/data/products";
+import Link from 'next/link';
 
 export default function FeaturedProducts() {
   return (
@@ -30,9 +32,15 @@ export default function FeaturedProducts() {
                 ${product.price}
               </p>
 
-              <button className="w-full py-2 bg-[#bda48c] text-white text-[10px] font-bold uppercase tracking-widest hover:bg-black transition duration-300">
-                Shop Now
-              </button>
+             
+             
+<Link 
+  // Agar product.category मौजूद है, तो वही यूज़ करो, वरना डिफ़ॉल्ट 'women' पर भेजो
+  href={product.category ? `/${product.category.toLowerCase()}` : '/women-store'}
+  className="block w-full py-2 bg-[#bda48c] text-white text-[10px] text-center font-bold uppercase tracking-widest hover:bg-black transition duration-300"
+>
+  Shop Now
+</Link>
             </div>
           </div>
         ))}

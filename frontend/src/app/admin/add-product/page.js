@@ -6,19 +6,13 @@ import { useState, useEffect } from 'react';
 // CONSTANTS & CONFIG
 // -------------------------------------------------------------------------
 const CATEGORIES = [
-  'Kitchenware', 'Furniture', 'Decoratives', 'Garden Accessories',
-  'Lamp Stand and Holders', 'Men', 'Women', 'Kids', 'Accessories'
+   'Men', 'Women', 'Kids', 
 ];
 const SUB_CATEGORIES = {
-  Men: ['T-Shirts', 'Shirts', 'Jeans', 'Trousers', 'Hoodies', 'Jackets','Ethnic'],
+  Men: ['T-Shirts', 'Shirts', 'Jeans', 'Trousers', 'Hoodies', 'Jackets','Ethnic','Track-Pants'],
   Women: ['Sarees', 'Suits', 'Ethnic Sets', 'Dresses', 'Kurtas', 'Tops', 'Co-ord Sets'],
   Kids: ['Tops','Bottoms','Ethnic','Party','T-Shirts', 'shoes'],
-  Accessories: ['Watches', 'Bags', 'Jewellery'],
-  Kitchenware: ['Cookware', 'Utensils'],
-  Furniture: ['Chair', 'Table', 'Bed'],
-  Decoratives: ['Wall Art', 'Showpieces'],
-  'Garden Accessories': ['Pots', 'Tools'],
-  'Lamp Stand and Holders': ['Table Lamps', 'Wall Lamps'],
+  
 };
 // -------------------------------------------------------------------------
 // STYLES OBJECTS
@@ -78,14 +72,12 @@ export default function AdminDashboard() {
   // -------------------------------------------------------------------------
   // FETCH & DATA SYNC
   // -------------------------------------------------------------------------
-  const fetchProducts = async () => {
+ const fetchProducts = async () => {
     try {
-        const res = await fetch('http://localhost:5000/api/products');
-        const data = await res.json();
-        setProducts(Array.isArray(data) ? data : []);
-    } catch (err) {
-        console.error("Fetch error:", err);
-    }
+      const res = await fetch('http://localhost:5000/api/products');
+      const data = await res.json();
+      setProducts(Array.isArray(data) ? data : []);
+    } catch (err) { console.error("Fetch error:", err); }
   };
 
   useEffect(() => {
@@ -98,9 +90,6 @@ export default function AdminDashboard() {
     }
   }, [activeTab]);
 
-  // -------------------------------------------------------------------------
-  // HANDLERS
-  // -------------------------------------------------------------------------
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
@@ -119,29 +108,29 @@ export default function AdminDashboard() {
       const res = await fetch('http://localhost:5000/api/upload', { method: 'POST', body: formData });
       const data = await res.json();
       if (data.url) handleImageChange(index, data.url);
-    } catch (err) {
-      console.error("Upload failed", err);
-    }
+    } catch (err) { console.error("Upload failed", err); }
   };
 
   const handleDelete = async (id) => {
-    if(!window.confirm("Are you sure you want to delete this product?")) return;
+    if (!window.confirm("Are you sure?")) return;
     try {
-        const res = await fetch(`http://localhost:5000/api/products?id=${id}`, { method: 'DELETE' });
-        if(res.ok) {
-            setProducts(products.filter(p => p.id !== id));
-            alert("Product removed from Database.");
-        }
-    } catch (error) {
-        alert("Delete failed.");
-    }
+      const res = await fetch(`http://localhost:5000/api/products/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setProducts(products.filter(p => p.id !== id));
+        alert("Product removed.");
+      }
+    } catch (error) { alert("Delete failed."); }
   };
 
+  // -------------------------------------------------------------------------
+  // FIXED SUBMIT HANDLER
+  // -------------------------------------------------------------------------
   const handleSubmit = async () => {
     if (!form.name || !form.category) {
-        alert("Please fill Name and Category");
-        return;
+      alert("Please fill Name and Category");
+      return;
     }
+
     setLoading(true);
     try {
       const payload = {
@@ -149,14 +138,13 @@ export default function AdminDashboard() {
         category: form.category.toLowerCase(),
         subcategory: form.subcategory || null,
         images: form.images.filter(img => img !== ''),
-        // pgAdmin compatibility for JSON reviews
         reviews: form.reviewerName ? [{
           reviewerName: form.reviewerName,
           rating: form.rating,
           text: form.reviewText,
         }] : [],
       };
-      
+
       const res = await fetch('http://localhost:5000/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -164,7 +152,7 @@ export default function AdminDashboard() {
       });
 
       if (res.ok) {
-        setSuccess('✅ Product saved to pgAdmin successfully!');
+        setSuccess('✅ Product saved successfully!');
         setForm({
           name: '', category: '', subcategory: '', originalPrice: '', discountedPrice: '',
           inStock: true, shortDescription: '', fullDescription: '',
@@ -172,11 +160,11 @@ export default function AdminDashboard() {
         });
         setTimeout(() => setSuccess(''), 4000);
       } else {
-          const errData = await res.json();
-          alert("Error: " + errData.error);
+        const errData = await res.json();
+        alert("Error: " + errData.error);
       }
     } catch (err) {
-        alert("Connection failed! Check backend terminal.");
+      alert("Connection failed! Check backend terminal.");
     } finally {
       setLoading(false);
     }

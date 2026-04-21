@@ -8,6 +8,8 @@ import KidsItem from "@/components/KidsItem";
 const FILTER_DATA = {
   categories: [
     { name: "Tops", count: 120, slug: "tops" },
+    { name: "JEANS", count:300, slug: "jeans" },
+   {name: "SHIRTS", count:200, slug: "shirts" },
     { name: "Bottoms", count: 85, slug: "bottoms" },
     { name: "Ethnic Wear", count: 200, slug: "ethnic" },
     { name: "Party Wear", count: 95, slug: "party" },
@@ -36,8 +38,11 @@ const CATEGORIES = [
   { name: "ETHNIC WEAR", icon: "🧣", slug: "ethnic" },
   { name: "PARTY WEAR", icon: "👗", slug: "party" },
   { name: "TOPS", icon: "👚", slug: "tops" },
+  { name: "JEANS", icon: "👖", slug: "jeans" },
+   {name: "SHIRTS", icon: "👕", slug: "shirts" },
   { name: "BOTTOMS", icon: "👖", slug: "bottoms" },
   { name: "FOOTWEAR", icon: "👟", slug: "shoes" },
+  
 ];
 
 const CAROUSEL_IMAGES = [
@@ -186,7 +191,7 @@ const handleDelete = async (productId) => {
   return (
     <div className="bg-white min-h-screen font-sans bg-center">
       {/* --- STICKY NAVIGATION --- */}
-     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b">
+     <nav className="sticky top-20 z-40 bg-white/95 backdrop-blur-md border-b">
   {/* 1. justify-start: Mobile par start se dikhayega (scrollable)
     2. md:justify-center: Laptop/Desktop par center mein kar dega
     3. w-full: Container ko full width dega 

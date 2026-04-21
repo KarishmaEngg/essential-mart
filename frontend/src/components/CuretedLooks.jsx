@@ -1,31 +1,39 @@
+"use client";
 import React from 'react';
-import { ShoppingBag } from 'lucide-react'; // Make sure to run: npm install lucide-react
+import { ShoppingBag } from 'lucide-react';
+import Link from 'next/link';
 
+// Updated data with category field
 const looks = [
   {
     id: 1,
-    imageUrl: 'https://images.pexels.com/photos/157675/fashion-men-s-individuality-black-and-white-157675.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', // Placeholder: Black jumpsuit look
+    imageUrl: 'https://i.pinimg.com/736x/64/6a/1e/646a1edf3ac1f7c1abab2bb6eb17f604.jpg',
     size: 'small',
+    category: 'kids',
   },
   {
     id: 2,
-    imageUrl: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', // Placeholder: Man in beige co-ord
+    imageUrl: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     size: 'medium',
+    category: 'men',
   },
   {
     id: 3,
-    imageUrl: 'https://images.pexels.com/photos/1126993/pexels-photo-1126993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', // Placeholder: Woman in rust top/white shorts (Center focus)
+    imageUrl: 'https://images.pexels.com/photos/1126993/pexels-photo-1126993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     size: 'large',
+    category: 'women',
   },
   {
     id: 4,
-    imageUrl: 'https://images.pexels.com/photos/2043590/pexels-photo-2043590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', // Placeholder: Yellow traditional look
+    imageUrl: 'https://images.pexels.com/photos/2043590/pexels-photo-2043590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     size: 'medium',
+    category: 'women',
   },
   {
     id: 5,
-    imageUrl: 'https://images.pexels.com/photos/1304647/pexels-photo-1304647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', // Placeholder: Man in striped shirt/shorts
+    imageUrl: 'https://i.pinimg.com/736x/80/0a/31/800a3174cfff335726ed657d312cdadb.jpg',
     size: 'small',
+    category: 'kids',
   },
 ];
 
@@ -55,7 +63,7 @@ const CuratedLooks = () => {
         case 'large': return 'mt-0';
         default: return 'mt-0';
     }
-  }
+  };
 
   return (
     <section className="bg-[#f9f9f9] py-20 px-4 md:px-10">
@@ -77,14 +85,17 @@ const CuratedLooks = () => {
                 className="w-full h-full object-cover transition-transform duration-[2s] ease-out group-hover:scale-105"
               />
               
-              {/* SHOP ALL BUTTON */}
+              {/* SHOP ALL BUTTON (Link with Category Logic) */}
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
-                <button className="flex items-center gap-2.5 bg-white/95 backdrop-blur-sm px-6 py-3 shadow-lg rounded-full transition-all duration-300 hover:bg-black group-hover:bottom-8">
+                <Link 
+                  href={`/${(look.category || 'women').toLowerCase()}-store`}
+                  className="flex items-center gap-2.5 bg-white/95 backdrop-blur-sm px-6 py-3 shadow-lg rounded-full transition-all duration-300 hover:bg-black group-hover:bottom-8"
+                >
                   <ShoppingBag className="w-4 h-4 text-[#1a1a1a] transition-colors duration-300 group-hover:text-white" />
                   <span className="text-[11px] font-bold uppercase tracking-widest text-[#1a1a1a] transition-colors duration-300 group-hover:text-white">
                     Shop All
                   </span>
-                </button>
+                </Link>
               </div>
             </div>
           ))}
@@ -98,14 +109,17 @@ const CuratedLooks = () => {
                         src={look.imageUrl} 
                         alt={`Curated Look ${index + 1}`} 
                         className="w-full h-full object-cover"
-                    />
+                     />
                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-                        <button className="flex items-center gap-2 bg-white px-5 py-2.5 shadow-md rounded-full">
+                        <Link 
+                            href={`/${(look.category || 'women').toLowerCase()}-store`}
+                            className="flex items-center gap-2 bg-white px-5 py-2.5 shadow-md rounded-full"
+                        >
                             <ShoppingBag className="w-3.5 h-3.5 text-black" />
                             <span className="text-[10px] font-bold uppercase tracking-wider text-black">
                                 Shop All
                             </span>
-                        </button>
+                        </Link>
                     </div>
                 </div>
             ))}
