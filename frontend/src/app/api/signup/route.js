@@ -3,6 +3,8 @@ import { Pool } from "pg";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  // Is logic se local par SSL nahi mangega aur Vercel par automatic SSL set ho jayega
+  ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false
 });
 
 export async function POST(request) {
@@ -23,7 +25,8 @@ export async function POST(request) {
 
     return NextResponse.json({ message: "Account created successfully!" }, { status: 201 });
   } catch (error) {
+    // Isse Vercel ke logs mein actual error dikhega ki dikkat kya hai
     console.error("Signup Error:", error);
-    return NextResponse.json({ error: "Database connection failed" }, { status: 500 });
+    return NextResponse.json({ error: "Database connection failed: " + error.message }, { status: 500 });
   }
 }

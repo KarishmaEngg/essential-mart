@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
 import { Pool } from "pg";
-
-// Database Connection setup
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // FIX: Localhost ke liye SSL ko false kar diya hai taaki connection error na aaye
-  ssl: false 
+  // Vercel par chalne ke liye is line ka hona zaroori hai:
+  ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false
 });
 
 export async function POST(request) {
